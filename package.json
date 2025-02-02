@@ -1,7 +1,7 @@
 {
-  "name": "",
+  "name": "bolted-frontend",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.6.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -9,6 +9,10 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.2.3"
+    "@astrojs/react": "^4.2.0",
+    "@astrojs/tailwind": "^6.0.0",
+    "astro": "^5.2.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }
