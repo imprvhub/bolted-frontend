@@ -3,7 +3,7 @@ import React from 'react';
 const Header = () => {
   return (
     <header className="fixed w-full top-0 z-50">
-      <nav className="bg-white/10 backdrop-blur-md border border-white/20 rounded-b-2xl shadow-lg">
+      <nav className="bg-black/30 backdrop-blur-md border border-white/20 rounded-b-2xl shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <a href="/" className="flex items-center space-x-2">

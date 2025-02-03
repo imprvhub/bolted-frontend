@@ -49,7 +49,7 @@ const UrlShortener = () => {
   };
 
   return (
-    <main className="max-w-2xl mx-auto p-6">
+    <main className="max-w-2xl mt-12 mx-auto p-6">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="flex flex-col space-y-2">
           <label htmlFor="urlInput" className="text-[#acacac] font-medium">
@@ -65,7 +65,7 @@ const UrlShortener = () => {
               type="text"
               value={url}
               onChange={handleUrlChange}
-              className="w-full pl-[100px] text-white px-4 py-2 border bg-gradient-to-br from-slate-900 to-slate-800  border-gray-300 rounded-[10px] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-[100px] text-white px-4 py-2 border bg-gradient-to-br from-slate-900 to-slate-800  border-[#1e1e1e] rounded-[10px] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="example.com"
               title="Enter the URL without https://"
               required
