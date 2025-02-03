@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
+import { Copy, ExternalLink, Check, Loader2 } from 'lucide-react';
 
 const UrlShortener = () => {
   const [url, setUrl] = useState('');
   const [shortenedUrl, setShortenedUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   const API_URL = import.meta.env.PUBLIC_API_URL || 'https://bolted.vercel.app/api';
 
-  const formatUrl = (inputUrl: string) => {
+  const formatUrl = (inputUrl: string): string => {
     let cleanUrl = inputUrl.replace(/^(https?:\/\/)+(.*)/i, '$2');
     return `https://${cleanUrl}`;
   };
 
-  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     const cleanValue = inputValue.replace(/^(https?:\/\/)+(.*)/i, '$2');
     setUrl(cleanValue);
     setError(null);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
@@ -41,8 +44,8 @@ const UrlShortener = () => {
 
       const data = await response.json();
       setShortenedUrl(data.shortened_url);
-    } catch (error) {
-      console.error('Error shortening URL:', error);
+    } catch (err) {
+      console.error('Error shortening URL:', err);
       setError('Failed to shorten URL. Please try again.');
     } finally {
       setIsLoading(false);
@@ -52,11 +55,16 @@ const UrlShortener = () => {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(shortenedUrl);
-      alert('URL copied to clipboard!');
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
     } catch (err) {
       console.error('Failed to copy:', err);
       setError('Failed to copy URL to clipboard');
     }
+  };
+
+  const openInNewTab = () => {
+    window.open(shortenedUrl, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -80,6 +88,10 @@ const UrlShortener = () => {
               placeholder="example.com"
               title="Enter the URL without https://"
               required
+              autoComplete="off"
+              autoCapitalize="off"
+              autoCorrect="off"
+              spellCheck="false"
             />
           </div>
         </div>
@@ -94,9 +106,16 @@ const UrlShortener = () => {
           type="submit"
           disabled={isLoading}
           title="Click to shorten URL"
-          className="w-full text-white py-2 px-4 rounded-lg transition duration-300 bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600"
+          className="w-full text-white py-2 px-4 rounded-lg transition duration-300 bg-gradient-to-r from-slate-700 to-slate-900 hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600 flex items-center justify-center gap-2"
         >
-          {isLoading ? 'Shortening...' : 'Shorten URL'}
+          {isLoading ? (
+            <>
+              <Loader2 size={16} className="animate-spin" />
+              Shortening...
+            </>
+          ) : (
+            'Shorten URL'
+          )}
         </button>
       </form>
 
@@ -115,9 +134,18 @@ const UrlShortener = () => {
             <button
               onClick={copyToClipboard}
               title="Copy URL to clipboard"
-              className="px-4 py-2 bg-gradient-to-r from-slate-700 to-slate-900 rounded-lg hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600 text-white"
+              className="px-4 py-2 bg-gradient-to-r from-slate-700 to-slate-900 rounded-lg hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600 text-white flex items-center gap-2"
             >
-              Copy
+              {isCopied ? <Check size={16} /> : <Copy size={16} />}
+              {isCopied ? 'Copied!' : 'Copy'}
+            </button>
+            <button
+              onClick={openInNewTab}
+              title="Open in new tab"
+              className="px-4 py-2 bg-gradient-to-r from-slate-700 to-slate-900 rounded-lg hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600 text-white flex items-center gap-2"
+            >
+              <ExternalLink size={16} />
+              Open
             </button>
           </div>
         </section>
