@@ -4,6 +4,9 @@ const UrlShortener = () => {
   const [url, setUrl] = useState('');
   const [shortenedUrl, setShortenedUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const API_URL = import.meta.env.PUBLIC_API_URL || 'https://bolted.vercel.app/api';
 
   const formatUrl = (inputUrl: string) => {
     let cleanUrl = inputUrl.replace(/^(https?:\/\/)+(.*)/i, '$2');
@@ -14,15 +17,17 @@ const UrlShortener = () => {
     const inputValue = e.target.value;
     const cleanValue = inputValue.replace(/^(https?:\/\/)+(.*)/i, '$2');
     setUrl(cleanValue);
+    setError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setError(null);
 
     try {
       const formattedUrl = formatUrl(url);
-      const response = await fetch('http://localhost:8000/api/shorten', {
+      const response = await fetch(`${API_URL}/shorten`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,10 +35,15 @@ const UrlShortener = () => {
         body: JSON.stringify({ url: formattedUrl }),
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to shorten URL');
+      }
+
       const data = await response.json();
       setShortenedUrl(data.shortened_url);
     } catch (error) {
       console.error('Error shortening URL:', error);
+      setError('Failed to shorten URL. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -45,6 +55,7 @@ const UrlShortener = () => {
       alert('URL copied to clipboard!');
     } catch (err) {
       console.error('Failed to copy:', err);
+      setError('Failed to copy URL to clipboard');
     }
   };
 
@@ -65,13 +76,20 @@ const UrlShortener = () => {
               type="text"
               value={url}
               onChange={handleUrlChange}
-              className="w-full pl-[100px] text-white px-4 py-2 border bg-gradient-to-br from-slate-900 to-slate-800  border-[#1e1e1e] rounded-[10px] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-[100px] text-white px-4 py-2 border bg-gradient-to-br from-slate-900 to-slate-800 border-[#1e1e1e] rounded-[10px] focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               placeholder="example.com"
               title="Enter the URL without https://"
               required
             />
           </div>
         </div>
+
+        {error && (
+          <div className="text-red-500 text-sm mt-2">
+            {error}
+          </div>
+        )}
+
         <button
           type="submit"
           disabled={isLoading}
@@ -83,8 +101,8 @@ const UrlShortener = () => {
       </form>
 
       {shortenedUrl && (
-        <section className="mt-6 p-4 bg-gray-50 rounded-lg">
-          <p className="text-gray-700 font-medium mb-2">Shortened URL:</p>
+        <section className="mt-6 p-4 bg-gradient-to-br from-slate-900 to-slate-800 rounded-lg border border-slate-600">
+          <p className="text-[#acacac] font-medium mb-2">Shortened URL:</p>
           <div className="flex items-center space-x-2">
             <input
               type="text"
@@ -92,7 +110,7 @@ const UrlShortener = () => {
               readOnly
               title="Your shortened URL"
               placeholder="Shortened URL will appear here"
-              className="flex-1 px-4 py-2 bg-white border border-gray-300 rounded-lg"
+              className="flex-1 px-4 py-2 bg-gradient-to-br from-slate-800 to-slate-900 text-white border border-slate-600 rounded-lg"
             />
             <button
               onClick={copyToClipboard}
