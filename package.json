@@ -13,7 +13,6 @@
     "@astrojs/tailwind": "^6.0.0",
     "@astrojs/vercel": "^8.0.4",
     "astro": "^5.2.3",
-    "lucide-react": "^0.474.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   }
