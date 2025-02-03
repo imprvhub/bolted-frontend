@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 
+// Custom SVG Components
 const CopyIcon = () => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
@@ -211,7 +212,9 @@ const UrlShortener = () => {
               className="px-4 py-2 bg-gradient-to-r from-slate-700 to-slate-900 rounded-lg hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600 text-white flex items-center gap-2"
             >
               {isCopied ? <CheckIcon /> : <CopyIcon />}
-              {isCopied ? 'Copied!' : 'Copy'}
+              <span className="hidden sm:inline">
+                {isCopied ? 'Copied!' : 'Copy'}
+              </span>
             </button>
             <button
               onClick={openInNewTab}
@@ -219,7 +222,9 @@ const UrlShortener = () => {
               className="px-4 py-2 bg-gradient-to-r from-slate-700 to-slate-900 rounded-lg hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600 text-white flex items-center gap-2"
             >
               <ExternalLinkIcon />
-              Open
+              <span className="hidden sm:inline">
+                Open
+              </span>
             </button>
           </div>
         </section>
