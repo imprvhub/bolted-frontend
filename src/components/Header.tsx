@@ -18,25 +18,25 @@ const Header = () => {
             </a>
           </div>
           
-          <div className="hidden md:flex items-center space-x-6">
-            <a 
-              href="#features" 
-              className="text-sm font-medium text-white/90 hover:text-white transition-colors"
-            >
-              Features
-            </a>
-            <a 
-              href="#pricing" 
-              className="text-sm font-medium text-white/90 hover:text-white transition-colors"
-            >
-              Pricing
-            </a>
-            <button 
-              className="text-sm inline-flex items-center px-4 py-2 bg-gradient-to-r from-slate-700 to-slate-900 rounded-lg hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600 text-white"
-            >
-              Get Started
-            </button>
-          </div>
+          {/* <div className="hidden md:flex items-center space-x-6">
+          <a 
+            href="#features" 
+            className="text-sm font-medium text-white/90 hover:text-white transition-colors"
+          >
+            Features
+          </a>
+          <a 
+            href="#pricing" 
+            className="text-sm font-medium text-white/90 hover:text-white transition-colors"
+          >
+            Pricing
+          </a>
+          <button 
+            className="text-sm inline-flex items-center px-4 py-2 bg-gradient-to-r from-slate-700 to-slate-900 rounded-lg hover:from-slate-800 hover:to-black disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-md border border-slate-600 text-white"
+          >
+            Get Started
+          </button>
+        </div> */}
         </div>
       </nav>
     </header>
